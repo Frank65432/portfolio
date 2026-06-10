@@ -1,0 +1,6 @@
+{
+  "name": "Frank Marvin Portfolio",
+  "description": "A high-end, responsive portfolio website for Frank Marvin, showcasing software development, YouTube channel content, clothing brand, digital creation and featuring an AI-powered conversational twin.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
