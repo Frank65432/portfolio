@@ -34,13 +34,14 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
       "SYSTEM: Prompt compiled. Emulated consciousness is analyzing. Feel free to ask about custom react components, clothing brand collections, or review YouTube statistics!"
   };
 
-  const handleSendMessage = (textToSend: string) => {
+  const handleSendMessage = async (textToSend: string) => {
     if (!textToSend.trim()) return;
 
     const timestamp = new Date().toTimeString().split(' ')[0].substring(0, 5);
     const userMsg: Message = { sender: "user", text: textToSend, timestamp };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setUserInput("");
     setIsTyping(true);
 
@@ -48,25 +49,56 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
       onSuggestedClick(textToSend);
     }
 
-    // Simulate Twin compilation delay
-    setTimeout(() => {
-      const normalized = textToSend.toLowerCase().trim();
-      let replyText = twinResponses["default"];
+    try {
+      // Map existing messages to a simple sender role structure for history context
+      const history = updatedMessages.slice(0, -1).map((msg) => ({
+        role: msg.sender === "user" ? "user" : "model",
+        parts: [{ text: msg.text }],
+      }));
 
-      if (normalized.includes("clo") || normalized.includes("apparel") || normalized.includes("clothing")) {
-        replyText = twinResponses["tell me about marvin clo"];
-      } else if (normalized.includes("stack") || normalized.includes("typescript") || normalized.includes("tech")) {
-        replyText = twinResponses["what is your tech stack?"];
-      } else if (normalized.includes("contract") || normalized.includes("work") || normalized.includes("hire")) {
-        replyText = twinResponses["are you available for contracting work?"];
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: textToSend, history }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Backend response error");
       }
 
-      setMessages((prev) => [
-        ...prev,
-        { sender: "twin", text: replyText, timestamp: new Date().toTimeString().split(' ')[0].substring(0, 5) }
-      ]);
+      const data = await res.json();
+      const botMsg: Message = {
+        sender: "twin",
+        text: data.text || "SYSTEM: Received empty response coordinate from model segment.",
+        timestamp: new Date().toTimeString().split(' ')[0].substring(0, 5),
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (error) {
+      console.warn("Dynamic API error, switching to twin emulation matrix:", error);
+      
+      // Intelligent fallback logic if local server key isn't active
+      setTimeout(() => {
+        const normalized = textToSend.toLowerCase().trim();
+        let replyText = twinResponses["default"];
+
+        if (normalized.includes("clo") || normalized.includes("apparel") || normalized.includes("clothing")) {
+          replyText = twinResponses["tell me about marvin clo"];
+        } else if (normalized.includes("stack") || normalized.includes("typescript") || normalized.includes("tech")) {
+          replyText = twinResponses["what is your tech stack?"];
+        } else if (normalized.includes("contract") || normalized.includes("work") || normalized.includes("hire")) {
+          replyText = twinResponses["are you available for contracting work?"];
+        } else {
+          replyText = `SYSTEM Fallback [Local Decoders]: I analyzed "${textToSend}". Connect with Frank directly at frankmarvin117@gmail.com for custom React projects, architectural streetwear drops, or video productions.`;
+        }
+
+        setMessages((prev) => [
+          ...prev,
+          { sender: "twin", text: replyText, timestamp: new Date().toTimeString().split(' ')[0].substring(0, 5) },
+        ]);
+      }, 700);
+    } finally {
       setIsTyping(false);
-    }, 900);
+    }
   };
 
   useEffect(() => {
