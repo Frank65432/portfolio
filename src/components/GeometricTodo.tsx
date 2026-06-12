@@ -93,17 +93,17 @@ export default function GeometricTodo() {
   const ratio = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
 
   return (
-    <div id="geometric-todo-module" className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#060A08]/80 border border-emerald-950/60 p-5 rounded-2xl relative overflow-hidden">
+    <div id="geometric-todo-module" className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[var(--theme-bg-card)] border border-[var(--theme-border)] p-5 rounded-2xl relative overflow-hidden">
       
       {/* Upper info band */}
-      <div className="lg:col-span-12 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-emerald-950/45 pb-4 gap-4">
+      <div className="lg:col-span-12 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[var(--theme-border)] pb-4 gap-4">
         <div>
           <span className="text-[9px] font-mono tracking-widest text-[var(--theme-accent)] uppercase block">// SECURE TASK INGESTION ENGINE</span>
-          <h4 className="font-display font-black text-sm text-white uppercase tracking-tight mt-0.5">Tactical Objective Ledger</h4>
+          <h4 className="font-display font-black text-sm text-[var(--theme-text-heading)] uppercase tracking-tight mt-0.5">Tactical Objective Ledger</h4>
         </div>
         
         {/* Progress Telemetry */}
-        <div className="flex items-center gap-4 bg-black/45 px-3 py-2 rounded-xl border border-emerald-950/50 w-full md:w-auto">
+        <div className="flex items-center gap-4 bg-[var(--theme-bg-base)]/80 px-3 py-2 rounded-xl border border-[var(--theme-border)] w-full md:w-auto">
           <div className="space-y-1">
             <div className="flex justify-between font-mono text-[8px] text-neutral-400">
               <span>LEDGER COMPILATION</span>
@@ -116,7 +116,7 @@ export default function GeometricTodo() {
               ></div>
             </div>
           </div>
-          <div className="font-display font-extrabold text-[#E2E8F0] text-sm tracking-tight border-l border-emerald-900/40 pl-3">
+          <div className="font-display font-extrabold text-[var(--theme-text)] text-sm tracking-tight border-l border-[var(--theme-border)] pl-3">
             {completedCount}/{tasks.length}
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function GeometricTodo() {
               placeholder="Inject new task coordinate..."
               value={newLabel}
               onChange={(e) => setNewLabel(e.target.value)}
-              className="w-full bg-[#020302] border border-emerald-950/60 rounded-xl px-3.5 py-3 text-xs text-white placeholder:text-neutral-700 font-sans focus:outline-none focus:border-[var(--theme-accent)]/50 transition-all font-medium"
+              className="w-full bg-[var(--theme-bg-base)] border border-[var(--theme-border)] rounded-xl px-3.5 py-3 text-xs text-[var(--theme-text)] placeholder:text-neutral-500 font-sans focus:outline-none focus:border-[var(--theme-accent)]/50 transition-all font-medium"
             />
           </div>
         </div>
@@ -153,11 +153,11 @@ export default function GeometricTodo() {
                   className={`py-2 text-[9px] font-mono rounded-lg border tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isActive
                       ? p === "critical"
-                        ? "bg-red-950/40 border-red-500/50 text-red-400 font-bold"
+                        ? "bg-red-500/10 border-red-500/50 text-red-500 dark:text-red-400 font-bold"
                         : p === "high"
-                        ? "bg-amber-950/40 border-amber-500/50 text-amber-400 font-bold"
-                        : "bg-emerald-950/40 border-emerald-500/50 text-emerald-400 font-bold"
-                      : "bg-neutral-950 border-neutral-900 text-neutral-500 hover:text-neutral-400"
+                        ? "bg-amber-500/10 border-amber-500/50 text-amber-600 dark:text-amber-400 font-bold"
+                        : "bg-emerald-500/10 border-emerald-500/50 text-emerald-600 dark:text-emerald-400 font-bold"
+                      : "bg-[var(--theme-bg-base)] border-[var(--theme-border)] text-neutral-500 hover:text-neutral-400"
                   }`}
                 >
                   {p}
@@ -181,8 +181,8 @@ export default function GeometricTodo() {
                   onClick={() => setCategory(cat)}
                   className={`py-2 text-[9px] font-mono rounded-lg border tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isActive
-                      ? "bg-[var(--theme-glow)] border-[var(--theme-touch)] text-white font-bold"
-                      : "bg-neutral-950 border-neutral-900 text-neutral-500 hover:text-neutral-400"
+                      ? "bg-[var(--theme-glow)] border-[var(--theme-accent)] text-[var(--theme-text-heading)] font-bold"
+                      : "bg-[var(--theme-bg-base)] border-[var(--theme-border)] text-neutral-500 hover:text-neutral-400"
                   }`}
                 >
                   {cat === "engineering" ? "ENGINE" : cat === "apparel" ? "APPAREL" : "CREATOR"}
@@ -196,7 +196,7 @@ export default function GeometricTodo() {
           id="todo-submit-btn"
           type="submit"
           disabled={!newLabel.trim()}
-          className="w-full py-3.5 bg-gradient-to-r from-[var(--theme-accent)] to-[var(--theme-accent-hover)] disabled:from-neutral-900 disabled:to-neutral-900 disabled:text-neutral-600 disabled:border-transparent text-[#050807] font-semibold text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_12px_var(--theme-glow)] hover:scale-[1.01] cursor-pointer"
+          className="w-full py-3.5 bg-gradient-to-r from-[var(--theme-accent)] to-[var(--theme-accent-hover)] disabled:from-neutral-900 disabled:to-neutral-900 disabled:text-neutral-600 disabled:border-transparent text-white dark:text-[#050807] font-semibold text-xs uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_12px_var(--theme-glow)] hover:scale-[1.01] cursor-pointer"
         >
           <Plus className="w-3.5 h-3.5 font-extrabold" />
           <span>Ingest Task Node</span>
@@ -207,7 +207,7 @@ export default function GeometricTodo() {
       <div className="lg:col-span-7 flex flex-col space-y-3">
         
         {/* Toggle Filters bar */}
-        <div className="flex items-center justify-between border-b border-emerald-950/45 pb-2">
+        <div className="flex items-center justify-between border-b border-[var(--theme-border)] pb-2">
           <div className="flex items-center gap-1.5 text-neutral-500 font-mono text-[9px]">
             <ListFilter className="w-3 h-3 text-[var(--theme-accent)]" />
             <span>SORT_BY:</span>
@@ -221,7 +221,7 @@ export default function GeometricTodo() {
                 onClick={() => setFilter(f)}
                 className={`px-2.5 py-1 rounded text-[8px] font-mono uppercase tracking-wide transition-all cursor-pointer ${
                   filter === f
-                    ? "bg-[var(--theme-border)] text-white border border-[var(--theme-border-hover)]"
+                    ? "bg-[var(--theme-border)] text-[var(--theme-text-heading)] border border-[var(--theme-border)]"
                     : "text-neutral-500 hover:text-neutral-400 border border-transparent"
                 }`}
               >
@@ -235,9 +235,9 @@ export default function GeometricTodo() {
         <div className="space-y-2 h-[260px] overflow-y-auto custom-scrollbar pr-1">
           {filteredTasks.map((t) => {
             const priorityColors = {
-              critical: "border-red-500/25 bg-red-950/5 text-red-400",
-              high: "border-amber-500/25 bg-amber-950/5 text-amber-400",
-              routine: "border-emerald-500/25 bg-emerald-950/5 text-emerald-400",
+              critical: "border-red-500/25 bg-red-950/5 text-red-500 dark:text-red-400",
+              high: "border-amber-500/25 bg-amber-950/5 text-amber-600 dark:text-amber-400",
+              routine: "border-emerald-500/25 bg-emerald-950/5 text-emerald-600 dark:text-emerald-400",
             };
 
             const categoryLabels = {
@@ -252,8 +252,8 @@ export default function GeometricTodo() {
                 key={t.id}
                 className={`p-3.5 border rounded-xl flex items-center justify-between gap-3 backdrop-blur-sm transition-all duration-300 ${
                   t.completed 
-                    ? "border-emerald-950/30 bg-[#040806]/40 opacity-55" 
-                    : "border-emerald-950/60 bg-[#0A100C]/80 hover:border-emerald-500/20"
+                    ? "border-[var(--theme-border)]/30 bg-[var(--theme-bg-base)]/40 opacity-55" 
+                    : "border-[var(--theme-border)] bg-[var(--theme-bg-card)] hover:border-[var(--theme-accent)]/20"
                 }`}
               >
                 <div className="flex items-center gap-3 w-full min-w-0">
@@ -264,8 +264,8 @@ export default function GeometricTodo() {
                     onClick={() => handleToggle(t.id)}
                     className={`w-4 h-4 rounded border flex items-center justify-center cursor-pointer transition-all ${
                       t.completed
-                        ? "bg-emerald-500 border-transparent text-black"
-                        : "border-emerald-950 hover:border-[var(--theme-accent)]"
+                        ? "bg-[var(--theme-accent)] border-transparent text-white dark:text-[#050807]"
+                        : "border-[var(--theme-border)] hover:border-[var(--theme-accent)]"
                     }`}
                   >
                     {t.completed && <Check className="w-2.5 h-2.5 stroke-[3px]" />}
@@ -274,7 +274,7 @@ export default function GeometricTodo() {
                   <div className="space-y-1 min-w-0 flex-1">
                     <span 
                       className={`text-xs block font-sans truncate ${
-                        t.completed ? "line-through text-neutral-500 font-normal" : "text-white font-medium"
+                        t.completed ? "line-through text-neutral-500 font-normal" : "text-[var(--theme-text-heading)] font-medium"
                       }`}
                     >
                       {t.label}
@@ -286,7 +286,7 @@ export default function GeometricTodo() {
                       <span className="text-neutral-500">
                         {categoryLabels[t.category]}
                       </span>
-                      <span className="text-neutral-600 font-normal">
+                      <span className="text-neutral-500/80 font-normal">
                         @{t.createdAt}
                       </span>
                     </div>
@@ -297,7 +297,7 @@ export default function GeometricTodo() {
                   id={`todo-delete-${t.id}`}
                   type="button"
                   onClick={() => handleDelete(t.id)}
-                  className="text-neutral-600 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-red-500/5 cursor-pointer shrink-0"
+                  className="text-neutral-500 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-500/5 cursor-pointer shrink-0"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -306,13 +306,13 @@ export default function GeometricTodo() {
           })}
 
           {filteredTasks.length === 0 && (
-            <div className="py-12 text-center text-neutral-600 text-[10px] font-mono uppercase bg-black/25 rounded-xl border border-dashed border-emerald-950/45">
+            <div className="py-12 text-center text-neutral-500/70 text-[10px] font-mono uppercase bg-[var(--theme-bg-base)]/25 rounded-xl border border-dashed border-[var(--theme-border)]">
               [ NO_CORRESPONDENT_TASKS_DETAILED ]
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-between text-[8px] font-mono text-neutral-600 pt-1">
+        <div className="flex items-center justify-between text-[8px] font-mono text-neutral-500 pt-1">
           <span>PERSISTENCE: LOCAL_STORAGE (SYNCED)</span>
           <span>STABLE SECURE ENGINE</span>
         </div>

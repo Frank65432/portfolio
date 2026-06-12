@@ -33,18 +33,21 @@ export default function App() {
   const [showFullStory, setShowFullStory] = useState(false);
   const [systemUptime, setSystemUptime] = useState("00:00:00");
   const [cpuLoad, setCpuLoad] = useState(4);
-  const [theme, setTheme] = useState<"emerald" | "void">(() => {
+  const [theme, setTheme] = useState<"emerald" | "void" | "light">(() => {
     const saved = localStorage.getItem("frank_portfolio_theme");
-    return (saved === "void" || saved === "emerald") ? (saved as "void" | "emerald") : "emerald";
+    return (saved === "void" || saved === "emerald" || saved === "light") 
+      ? (saved as "void" | "emerald" | "light") 
+      : "light";
   });
 
   // Track the active system theme class
   useEffect(() => {
     localStorage.setItem("frank_portfolio_theme", theme);
+    document.documentElement.classList.remove("theme-void", "theme-light");
     if (theme === "void") {
       document.documentElement.classList.add("theme-void");
-    } else {
-      document.documentElement.classList.remove("theme-void");
+    } else if (theme === "light") {
+      document.documentElement.classList.add("theme-light");
     }
   }, [theme]);
 
@@ -75,14 +78,14 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050807] text-[#E2E8F0] bg-tech-grid relative overflow-hidden flex flex-col font-sans selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)] transition-colors duration-500">
+    <div className="min-h-screen bg-[var(--theme-bg-base)] text-[var(--theme-text)] bg-tech-grid relative overflow-hidden flex flex-col font-sans selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)] transition-colors duration-500">
       
       {/* Decorative ambient glowing grids behind cards */}
-      <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-zinc-500/3' : 'bg-emerald-500/5'}`}></div>
-      <div className={`absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-neutral-500/3' : 'bg-emerald-600/5'}`}></div>
+      <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-zinc-500/3' : theme === 'light' ? 'bg-emerald-500/3' : 'bg-emerald-500/5'}`}></div>
+      <div className={`absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-neutral-500/3' : theme === 'light' ? 'bg-emerald-600/3' : 'bg-emerald-600/5'}`}></div>
       
       {/* Dynamic top ticker signaling active telemetry */}
-      <div className="w-full bg-[#0A100C]/90 border-b border-emerald-950/40 px-6 py-2 flex justify-between items-center text-[9px] font-mono uppercase tracking-[0.2em] text-[var(--theme-accent)] transition-all">
+      <div className="w-full bg-[var(--theme-navbar-bg)] border-b border-[var(--theme-border)] px-6 py-2 flex justify-between items-center text-[9px] font-mono uppercase tracking-[0.2em] text-[var(--theme-accent)] transition-all">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
             <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${theme === 'void' ? 'bg-zinc-400' : 'bg-emerald-400'}`}></span>
@@ -98,35 +101,47 @@ export default function App() {
       </div>
 
       {/* Styled Micro-Header */}
-      <header className="flex flex-col lg:flex-row justify-between items-center px-6 py-8 md:px-12 border-b border-emerald-950/40 bg-[#0A100C]/45 backdrop-blur-md gap-6">
+      <header className="flex flex-col lg:flex-row justify-between items-center px-6 py-8 md:px-12 border-b border-[var(--theme-border)] bg-[var(--theme-bg-card)] backdrop-blur-md gap-6">
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[var(--theme-accent)] to-[var(--theme-accent-hover)] p-[1.5px] shadow-[0_0_20px_var(--theme-glow)] transition-all duration-500">
-            <div className="w-full h-full bg-[#050807] rounded-[10px] flex items-center justify-center font-display font-black text-sm text-[var(--theme-accent)] transition-all">
+            <div className="w-full h-full bg-[var(--theme-bg-base)] rounded-[10px] flex items-center justify-center font-display font-black text-sm text-[var(--theme-accent)] transition-all">
               FM
             </div>
           </div>
           <div>
             <div className="text-[10px] font-mono tracking-widest uppercase text-[var(--theme-accent)] opacity-70 transition-all">// PORTFOLIO VOL. 04</div>
-            <h1 className="font-display font-black text-2xl tracking-tight text-white uppercase leading-none mt-1">
+            <h1 className="font-display font-black text-2xl tracking-tight text-[var(--theme-text-heading)] uppercase leading-none mt-1">
               FRANK MARVIN
             </h1>
           </div>
         </div>
         
         {/* Contact credentials & Theme Switching controller */}
-        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-[#E2E8F0]/70">
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-[var(--theme-text-muted)]">
           
           {/* Theme switcher segmented array */}
-          <div className="flex items-center bg-[#050807]/90 border border-emerald-950/70 p-1 rounded-xl text-[9px] font-mono shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+          <div className="flex items-center bg-[var(--theme-bg-base)] border border-[var(--theme-border)] p-1 rounded-xl text-[9px] font-mono shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
             <span className="px-2 text-[8px] text-neutral-500 select-none uppercase font-bold">THEME:</span>
+            <button
+              id="theme-light-btn"
+              type="button"
+              onClick={() => setTheme("light")}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer font-bold ${
+                theme === "light"
+                  ? "bg-[#059669] text-white font-black shadow-[0_0_10px_rgba(5,150,105,0.2)]"
+                  : "text-neutral-500 hover:text-[var(--theme-accent)]"
+              }`}
+            >
+              LIGHT PRO
+            </button>
             <button
               id="theme-emerald-btn"
               type="button"
               onClick={() => setTheme("emerald")}
               className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer font-bold ${
                 theme === "emerald"
-                  ? "bg-[#10B981] text-[#050807] font-black shadow-[0_0_10px_rgba(16,185,129,0.25)]"
-                  : "text-neutral-400 hover:text-white"
+                  ? "bg-[#10B981] text-[#050807] font-black shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                  : "text-neutral-500 hover:text-[var(--theme-accent)]"
               }`}
             >
               EMERALD
@@ -137,15 +152,15 @@ export default function App() {
               onClick={() => setTheme("void")}
               className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer font-bold ${
                 theme === "void"
-                  ? "bg-white text-black font-black shadow-[0_0_10px_rgba(255,255,255,0.25)]"
-                  : "text-neutral-400 hover:text-white"
+                  ? "bg-white text-black font-black shadow-[0_0_10px_rgba(255,255,255,0.2)]"
+                  : "text-neutral-500 hover:text-[var(--theme-accent)]"
               }`}
             >
               VOID (MONO)
             </button>
           </div>
 
-          <div className="flex items-center gap-2 bg-emerald-950/30 px-3 py-1.5 rounded-full border border-emerald-900/40">
+          <div className="flex items-center gap-2 bg-[var(--theme-glow)] px-3 py-1.5 rounded-full border border-[var(--theme-border)] text-[var(--theme-text)]">
             <Phone className="w-3.5 h-3.5 text-[var(--theme-accent)] transition-all" />
             <span>07026100477</span>
           </div>
@@ -153,7 +168,7 @@ export default function App() {
           <button
             id="copy-email-header-btn"
             onClick={handleCopyEmail}
-            className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-[var(--theme-accent)] border border-emerald-500/20 rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-1.5 bg-[var(--theme-glow)] hover:opacity-85 text-[var(--theme-accent)] border border-[var(--theme-border)] rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
           >
             <Mail className="w-3.5 h-3.5" />
             <span>{copiedEmail ? "COPIED TO CLIPBOARD" : "frankmarvin518@gmail.com"}</span>
@@ -170,8 +185,8 @@ export default function App() {
             
             {/* Elegant glassmorphism Card */}
             <div className="tech-card p-6 md:p-8 space-y-6 relative overflow-hidden bg-dot-matrix animate-fade-in-up">
-              <div className="flex items-center justify-between border-b border-emerald-950/50 pb-4">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--theme-accent)] bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-800/40">
+              <div className="flex items-center justify-between border-b border-[var(--theme-border)] pb-4">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--theme-accent)] bg-[var(--theme-glow)] px-2.5 py-1 rounded-full border border-[var(--theme-border)]">
                   SYSTEM OVERVIEW
                 </span>
                 <div className="flex items-center gap-1.5 text-xs text-[var(--theme-accent)] opacity-75 font-mono">
@@ -181,19 +196,19 @@ export default function App() {
               </div>
               
               <div className="space-y-3">
-                <h2 className="text-4xl font-display font-extrabold tracking-tight text-white uppercase leading-none">
+                <h2 className="text-4xl font-display font-extrabold tracking-tight text-[var(--theme-text-heading)] uppercase leading-none">
                   FRANK MARVIN
                 </h2>
                 <div className="flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full animate-ping ${theme === 'void' ? 'bg-zinc-400' : 'bg-emerald-400'}`}></span>
-                  <span className={`text-[10px] font-mono tracking-widest uppercase ${theme === 'void' ? 'text-zinc-400' : 'text-emerald-400'}`}>
+                  <span className={`text-[10px] font-mono tracking-widest uppercase ${theme === 'void' ? 'text-zinc-400' : 'text-[var(--theme-accent)]'}`}>
                     FRONTEND ENGINEER / DESIGN SYSTEMS
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#94A3B8] leading-relaxed font-normal">
-                I engineer highly performant, visual frontend systems that combine design physics with production code complexity. Focusing on clean grid networks, low CPU rendering, micro-interactions, and beautiful user experience frameworks. Founder of <span className="text-white hover:text-[var(--theme-accent)] transition-all font-semibold cursor-pointer">MARVIN CLO</span> and developer educator on YouTube.
+              <p className="text-xs text-[var(--theme-text-muted)] leading-relaxed font-normal">
+                I engineer highly performant, visual frontend systems that combine design physics with production code complexity. Focusing on clean grid networks, low CPU rendering, micro-interactions, and beautiful user experience frameworks. Founder of <span className="text-[var(--theme-text-heading)] hover:text-[var(--theme-accent)] transition-all font-semibold cursor-pointer">MARVIN CLO</span> and developer educator on YouTube.
               </p>
 
               {/* Social Channels List with high-tech badge styling */}
@@ -229,7 +244,7 @@ export default function App() {
               </div>
 
               {/* Collapsible Technical Detail Journey */}
-              <div className="border-t border-emerald-950/30 pt-4">
+              <div className="border-t border-[var(--theme-border)] pt-4">
                 <button
                   id="toggle-story-btn"
                   onClick={() => setShowFullStory(!showFullStory)}
@@ -240,9 +255,9 @@ export default function App() {
                 </button>
                 
                 {showFullStory && (
-                  <div className="mt-4 space-y-5 text-xs text-[#94A3B8] leading-relaxed border-t border-dashed border-emerald-950/50 pt-4 animate-fade-in">
+                  <div className="mt-4 space-y-5 text-xs text-[var(--theme-text-muted)] leading-relaxed border-t border-dashed border-[var(--theme-border)] pt-4 animate-fade-in">
                     <div className="space-y-1">
-                      <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
+                      <strong className="text-[var(--theme-text-heading)] block uppercase font-mono text-[9px] tracking-wider font-semibold">
                         <span className="text-[var(--theme-accent)]">// 01_ </span> FRONTEND ENGINEERING
                       </strong>
                       <p>
@@ -250,7 +265,7 @@ export default function App() {
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
+                      <strong className="text-[var(--theme-text-heading)] block uppercase font-mono text-[9px] tracking-wider font-semibold">
                         <span className="text-[var(--theme-accent)]">// 02_ </span> CONTENT BROADCASTANDER
                       </strong>
                       <p>
@@ -258,16 +273,16 @@ export default function App() {
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
+                      <strong className="text-[var(--theme-text-heading)] block uppercase font-mono text-[9px] tracking-wider font-semibold">
                         <span className="text-[var(--theme-accent)]">// 03_ </span> STREETWEAR GEOMETRICS
                       </strong>
                       <p>
                         Transforming grid-aligned coding coordinates into heavy organic apparel drops at my clothing design lab, MARVIN CLO.
                       </p>
                     </div>
-                    <div className="bg-[#0A100C]/75 p-3.5 rounded-xl border border-emerald-950/50 text-[10px]">
+                    <div className="bg-[var(--theme-glow)] p-3.5 rounded-xl border border-[var(--theme-border)] text-[10px]">
                       <span className="font-mono text-[var(--theme-accent)] block uppercase tracking-wider font-bold mb-1">CORE STATEMENT</span>
-                      <p className="text-[#8492A6]">
+                      <p className="text-[var(--theme-text-muted)]">
                         Perfect products don't come from default layouts. They come from rigorous calculations, strict typography standards, and exceptional craft.
                       </p>
                     </div>
@@ -285,14 +300,14 @@ export default function App() {
           <div className="lg:col-span-8 space-y-8 animate-fade-in-up md:animation-delay-200">
             
             {/* Elegant high-tech tab system mimicking ZeBeyond */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 p-1.5 bg-[#0A100C]/80 border border-emerald-950/40 rounded-2xl">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 p-1.5 bg-[var(--theme-bg-card)] border border-[var(--theme-border)] rounded-2xl">
               <button
                 id="tab-btn-software"
                 onClick={() => setActiveTab("software")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "software"
                     ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    : "text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] hover:bg-[var(--theme-glow)] border border-transparent"
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
@@ -307,7 +322,7 @@ export default function App() {
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "youtube"
                     ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    : "text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] hover:bg-[var(--theme-glow)] border border-transparent"
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
@@ -322,7 +337,7 @@ export default function App() {
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "clothing"
                     ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    : "text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] hover:bg-[var(--theme-glow)] border border-transparent"
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
@@ -337,7 +352,7 @@ export default function App() {
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "creator"
                     ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    : "text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] hover:bg-[var(--theme-glow)] border border-transparent"
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
@@ -352,7 +367,7 @@ export default function App() {
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "figma"
                     ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
-                    : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
+                    : "text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] hover:bg-[var(--theme-glow)] border border-transparent"
                 }`}
               >
                 <div className="flex flex-col items-center gap-1">
@@ -380,15 +395,15 @@ export default function App() {
       </main>
 
       {/* Technical coordinate footer */}
-      <footer className="border-t border-emerald-950/40 bg-[#0A100C]/80 px-8 py-8 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-mono uppercase tracking-[0.15em] text-[#E2E8F0]/50">
+      <footer className="border-t border-[var(--theme-border)] bg-[var(--theme-bg-card)] px-8 py-8 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--theme-text-muted)]">
         <div className="flex items-center gap-3">
           <Layers className="w-4 h-4 text-[var(--theme-accent)] transition-all" />
           <span>&copy; 2026 FRANK MARVIN STUDIO • Inspired by ZeBeyond Engineering System v4</span>
         </div>
         <div className="flex flex-wrap justify-center gap-6">
           <span className="text-[var(--theme-accent)] opacity-85 hover:opacity-100 transition-all cursor-pointer">TEL: 07026100477</span>
-          <span className="hover:text-white transition-all cursor-pointer">SPECS: React 18 / Tailwind / Canvas</span>
-          <span className="hover:text-white transition-all cursor-pointer">GRID_DETERMINISTIC_MATRIX</span>
+          <span className="hover:text-[var(--theme-text-heading)] transition-all cursor-pointer">SPECS: React 18 / Tailwind / Canvas</span>
+          <span className="hover:text-[var(--theme-text-heading)] transition-all cursor-pointer">GRID_DETERMINISTIC_MATRIX</span>
         </div>
       </footer>
     </div>

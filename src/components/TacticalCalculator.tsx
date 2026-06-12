@@ -158,7 +158,7 @@ export default function TacticalCalculator() {
   };
 
   return (
-    <div id="tactical-calculator-module" className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#060A08]/80 border border-emerald-950/60 p-5 rounded-2xl relative overflow-hidden">
+    <div id="tactical-calculator-module" className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[var(--theme-bg-card)] border border-[var(--theme-border)] p-5 rounded-2xl relative overflow-hidden">
       
       {/* Decorative accent indicators */}
       <div className="absolute top-2 right-4 flex gap-1.5 items-center">
@@ -169,7 +169,7 @@ export default function TacticalCalculator() {
           className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
             soundEnabled 
               ? "text-[var(--theme-accent)] border-[var(--theme-border)] bg-[var(--theme-glow)]" 
-              : "text-neutral-500 border-neutral-900 bg-neutral-950"
+              : "text-neutral-500 border-[var(--theme-border)] bg-[var(--theme-bg-base)]"
           }`}
         >
           {soundEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
@@ -180,13 +180,13 @@ export default function TacticalCalculator() {
       <div className="lg:col-span-7 flex flex-col space-y-3.5">
         
         {/* Virtual screen display */}
-        <div className="bg-[#020302] border border-emerald-950/70 rounded-xl p-4 flex flex-col items-end justify-between min-h-[90px] font-mono relative overflow-hidden shadow-inner">
+        <div className="bg-[var(--theme-bg-base)] border border-[var(--theme-border)] rounded-xl p-4 flex flex-col items-end justify-between min-h-[90px] font-mono relative overflow-hidden shadow-inner">
           <div className="absolute top-1 left-2 text-[8px] text-neutral-500 font-bold uppercase tracking-widest">// COGNITIVE_BUFFER</div>
           
           <div className="text-[10px] text-neutral-500 select-all tracking-wider h-5 flex items-center justify-end w-full pr-1">
             {equation}
           </div>
-          <div className="text-2xl font-black text-white select-all w-full text-right overflow-x-auto whitespace-nowrap scrollbar-none pr-1 tracking-tight">
+          <div className="text-2xl font-black text-[var(--theme-text-heading)] select-all w-full text-right overflow-x-auto whitespace-nowrap scrollbar-none pr-1 tracking-tight">
             {display}
           </div>
         </div>
@@ -195,10 +195,10 @@ export default function TacticalCalculator() {
         <div className="grid grid-cols-4 gap-2">
           
           {/* Scientific row */}
-          <button id="calc-btn-clear" onClick={handleClear} className="py-3 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 font-mono text-xs font-bold rounded-lg border border-neutral-800 transition-all cursor-pointer uppercase">C</button>
-          <button id="calc-btn-square" onClick={handleSquare} className="py-3 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-400 font-mono text-xs rounded-lg border border-neutral-800 transition-all cursor-pointer">x²</button>
-          <button id="calc-btn-sqrt" onClick={handleSqrt} className="py-3 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-400 font-mono text-xs rounded-lg border border-neutral-800 transition-all cursor-pointer">√x</button>
-          <button id="calc-btn-back" onClick={handleBackspace} className="py-3 bg-neutral-900/80 hover:bg-neutral-800 text-neutral-300 font-mono text-xs rounded-lg border border-neutral-800 transition-all cursor-pointer font-bold select-none">&larr;</button>
+          <button id="calc-btn-clear" onClick={handleClear} className="py-3 bg-[var(--theme-bg-base)] hover:opacity-80 text-[var(--theme-text)] font-mono text-xs font-bold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer uppercase">C</button>
+          <button id="calc-btn-square" onClick={handleSquare} className="py-3 bg-[var(--theme-bg-base)] hover:opacity-80 text-[var(--theme-text-muted)] font-mono text-xs rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">x²</button>
+          <button id="calc-btn-sqrt" onClick={handleSqrt} className="py-3 bg-[var(--theme-bg-base)] hover:opacity-80 text-[var(--theme-text-muted)] font-mono text-xs rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">√x</button>
+          <button id="calc-btn-back" onClick={handleBackspace} className="py-3 bg-[var(--theme-bg-base)] hover:opacity-80 text-[var(--theme-text)] font-mono text-xs rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer font-bold select-none">&larr;</button>
 
           {/* Numbers & standard operations */}
           {["7", "8", "9"].map((num) => (
@@ -206,7 +206,7 @@ export default function TacticalCalculator() {
               id={`calc-btn-${num}`}
               key={num}
               onClick={() => handleNum(num)}
-              className="py-3.5 bg-neutral-950/80 hover:bg-neutral-900 text-white font-mono text-sm font-semibold rounded-lg border border-neutral-900 transition-all cursor-pointer"
+              className="py-3.5 bg-[var(--theme-bg-base)] hover:opacity-85 text-[var(--theme-text)] font-mono text-sm font-semibold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer"
             >
               {num}
             </button>
@@ -218,7 +218,7 @@ export default function TacticalCalculator() {
               id={`calc-btn-${num}`}
               key={num}
               onClick={() => handleNum(num)}
-              className="py-3.5 bg-neutral-950/80 hover:bg-neutral-900 text-white font-mono text-sm font-semibold rounded-lg border border-neutral-900 transition-all cursor-pointer"
+              className="py-3.5 bg-[var(--theme-bg-base)] hover:opacity-85 text-[var(--theme-text)] font-mono text-sm font-semibold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer"
             >
               {num}
             </button>
@@ -230,7 +230,7 @@ export default function TacticalCalculator() {
               id={`calc-btn-${num}`}
               key={num}
               onClick={() => handleNum(num)}
-              className="py-3.5 bg-neutral-950/80 hover:bg-neutral-900 text-white font-mono text-sm font-semibold rounded-lg border border-neutral-900 transition-all cursor-pointer"
+              className="py-3.5 bg-[var(--theme-bg-base)] hover:opacity-85 text-[var(--theme-text)] font-mono text-sm font-semibold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer"
             >
               {num}
             </button>
@@ -238,8 +238,8 @@ export default function TacticalCalculator() {
           <button id="calc-btn-sub" onClick={() => handleOperator("-")} className="py-3.5 bg-[var(--theme-glow)] hover:bg-[var(--theme-border)] text-[var(--theme-accent)] font-mono text-sm font-bold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">-</button>
 
           {/* Bottom row */}
-          <button id="calc-btn-0" onClick={() => handleNum("0")} className="col-span-2 py-3.5 bg-neutral-950/80 hover:bg-neutral-900 text-white font-mono text-sm font-semibold rounded-lg border border-neutral-900 transition-all cursor-pointer">0</button>
-          <button id="calc-btn-dot" onClick={() => handleNum(".")} className="py-3.5 bg-neutral-950/80 hover:bg-neutral-900 text-white font-mono text-sm font-semibold rounded-lg border border-neutral-900 transition-all cursor-pointer">.</button>
+          <button id="calc-btn-0" onClick={() => handleNum("0")} className="col-span-2 py-3.5 bg-[var(--theme-bg-base)] hover:opacity-85 text-[var(--theme-text)] font-mono text-sm font-semibold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">0</button>
+          <button id="calc-btn-dot" onClick={() => handleNum(".")} className="py-3.5 bg-[var(--theme-bg-base)] hover:opacity-85 text-[var(--theme-text)] font-mono text-sm font-semibold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">.</button>
           <button id="calc-btn-add" onClick={() => handleOperator("+")} className="py-3.5 bg-[var(--theme-glow)] hover:bg-[var(--theme-border)] text-[var(--theme-accent)] font-mono text-sm font-bold rounded-lg border border-[var(--theme-border)] transition-all cursor-pointer">+</button>
           
           <button
@@ -254,9 +254,9 @@ export default function TacticalCalculator() {
 
       {/* Terminal History Tape Output */}
       <div className="lg:col-span-5 flex flex-col h-full justify-between space-y-3">
-        <div className="flex items-center justify-between border-b border-emerald-950/40 pb-2">
-          <div className="flex items-center gap-1.5 font-mono text-[9px] text-[#10B981] font-bold">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
+        <div className="flex items-center justify-between border-b border-[var(--theme-border)] pb-2">
+          <div className="flex items-center gap-1.5 font-mono text-[9px] text-[var(--theme-accent)] font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-accent)] animate-pulse"></span>
             <span>COMPILING_LEDGER_TAPE</span>
           </div>
           <button
@@ -265,17 +265,17 @@ export default function TacticalCalculator() {
               playClickSound("clear");
               setHistory(["// CONSOLE_CLEARED //"]);
             }}
-            className="text-[8px] font-mono text-neutral-500 hover:text-white transition-colors uppercase cursor-pointer"
+            className="text-[8px] font-mono text-neutral-500 hover:text-[var(--theme-accent)] transition-colors uppercase cursor-pointer"
           >
             Clear Log
           </button>
         </div>
 
-        <div className="bg-[#020302] border border-emerald-950/50 rounded-xl p-3.5 h-[230px] overflow-y-auto custom-scrollbar font-mono text-[9px] text-zinc-400 space-y-1.5 flex flex-col justify-end">
+        <div className="bg-[var(--theme-bg-base)] border border-[var(--theme-border)] rounded-xl p-3.5 h-[230px] overflow-y-auto custom-scrollbar font-mono text-[9px] text-neutral-400 space-y-1.5 flex flex-col justify-end">
           <div className="space-y-1">
             {history.map((line, idx) => (
-              <div key={idx} className="leading-tight break-all border-l-2 border-dashed border-emerald-900/30 pl-2">
-                <span className="text-neutral-600 block text-[8px] opacity-70">
+              <div key={idx} className="leading-tight break-all border-l-2 border-dashed border-[var(--theme-border)]/50 pl-2">
+                <span className="text-neutral-500 block text-[8px] opacity-70">
                   [{new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}] // SECURE
                 </span>
                 <span className={line.includes("EXEC") || line.includes("SQUARE") || line.includes("SQRT") ? "text-[var(--theme-accent)] font-semibold" : "text-neutral-500"}>
@@ -286,7 +286,7 @@ export default function TacticalCalculator() {
           </div>
         </div>
 
-        <div className="p-2.5 bg-emerald-950/15 border border-emerald-900/20 text-[8px] font-mono rounded-lg flex items-center justify-between text-neutral-400">
+        <div className="p-2.5 bg-[var(--theme-glow)] border border-[var(--theme-border)] text-[8px] font-mono rounded-lg flex items-center justify-between text-neutral-400">
           <span>COEFF SPEED: ~0.02ms</span>
           <span>SENS: HIGH_TAPE</span>
         </div>

@@ -10,6 +10,10 @@
   --theme-border-hover: rgba(16, 185, 129, 0.45);
   --theme-glow: rgba(16, 185, 129, 0.08);
   --theme-pulse-dot: #10B981;
+  --theme-text: #E2E8F0;
+  --theme-text-muted: #94A3B8;
+  --theme-text-heading: #FFFFFF;
+  --theme-navbar-bg: rgba(10, 16, 13, 0.9);
   
   --grid-line: rgba(16, 185, 129, 0.04);
   --dot-matrix: rgba(16, 185, 129, 0.08);
@@ -26,11 +30,35 @@
   --theme-border-hover: rgba(255, 255, 255, 0.28);
   --theme-glow: rgba(255, 255, 255, 0.04);
   --theme-pulse-dot: #94A3B8;
+  --theme-text: #E4E4E7;
+  --theme-text-muted: #71717A;
+  --theme-text-heading: #FFFFFF;
+  --theme-navbar-bg: rgba(15, 15, 15, 0.95);
   
   --grid-line: rgba(255, 255, 255, 0.015);
   --dot-matrix: rgba(255, 255, 255, 0.03);
   --selection-bg: rgba(255, 255, 255, 0.15);
   --selection-text: #FFFFFF;
+}
+
+.theme-light {
+  --theme-accent: #059669;
+  --theme-accent-hover: #047857;
+  --theme-bg-base: #F8FAFC;
+  --theme-bg-card: rgba(255, 255, 255, 0.9);
+  --theme-border: rgba(5, 150, 105, 0.15);
+  --theme-border-hover: rgba(5, 150, 105, 0.35);
+  --theme-glow: rgba(5, 150, 105, 0.03);
+  --theme-pulse-dot: #059669;
+  --theme-text: #1E293B;
+  --theme-text-muted: #475569;
+  --theme-text-heading: #0F172A;
+  --theme-navbar-bg: rgba(241, 245, 249, 0.95);
+  
+  --grid-line: rgba(5, 150, 105, 0.04);
+  --dot-matrix: rgba(5, 150, 105, 0.06);
+  --selection-bg: rgba(5, 150, 105, 0.15);
+  --selection-text: #059669;
 }
 
 @theme {
@@ -41,7 +69,7 @@
 
 body {
   background-color: var(--theme-bg-base);
-  color: #F8FAFC;
+  color: var(--theme-text);
   font-family: var(--font-sans);
   overflow-x: hidden;
   transition: background-color 0.4s ease, color 0.4s ease;
@@ -102,7 +130,7 @@ body {
 
 .tech-btn-secondary {
   background: var(--theme-glow);
-  color: #F8FAFC;
+  color: var(--theme-text);
   border: 1px solid var(--theme-border);
   border-radius: 9999px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);

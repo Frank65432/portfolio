@@ -108,23 +108,23 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
   }, [messages, isTyping]);
 
   return (
-    <div className="tech-card overflow-hidden flex flex-col h-[420px] bg-slate-950/20 border border-emerald-950/60 shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
+    <div className="tech-card overflow-hidden flex flex-col h-[420px] bg-[var(--theme-bg-card)] border border-[var(--theme-border)] shadow-[0_10px_25px_rgba(0,0,0,0.05)]">
       
       {/* Bot Header band */}
-      <div className="p-4 bg-emerald-950/25 border-b border-emerald-950/50 text-white flex items-center justify-between">
+      <div className="p-4 bg-[var(--theme-glow)] border-b border-[var(--theme-border)] text-[var(--theme-text-heading)] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Bot className="w-4 h-4 text-[#10B981] animate-bounce" />
-          <h3 className="font-mono text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400">
+          <Bot className="w-4 h-4 text-[var(--theme-accent)] animate-bounce" />
+          <h3 className="font-mono text-[9px] font-black uppercase tracking-[0.2em] text-[var(--theme-accent)]">
             AI_TWIN_EMULATION_v4
           </h3>
         </div>
-        <span className="text-[8px] font-mono bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 font-bold uppercase tracking-wider text-[#10B981] rounded-full">
+        <span className="text-[8px] font-mono bg-[var(--theme-glow)] border border-[var(--theme-border)] px-2 py-0.5 font-bold uppercase tracking-wider text-[var(--theme-accent)] rounded-full">
           CONSOLE_ONLINE
         </span>
       </div>
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[#040806]/65" ref={scrollRef}>
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[var(--theme-bg-base)]/40" ref={scrollRef}>
         {messages.map((message, idx) => (
           <div
             id={`chat-msg-${idx}`}
@@ -140,8 +140,8 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
             <div
               className={`max-w-[85%] text-xs p-3 leading-relaxed rounded-xl border ${
                 message.sender === "user"
-                  ? "bg-[#10B981] text-[#050807] border-transparent font-semibold rounded-br-none shadow-[0_4px_10px_rgba(16,185,129,0.15)]"
-                  : "bg-neutral-900/60 text-[#E2E8F0] border-emerald-950/60 rounded-bl-none font-normal"
+                  ? "bg-[var(--theme-accent)] text-white dark:text-[#050807] border-transparent font-semibold rounded-br-none shadow-[0_4px_10px_var(--theme-glow)]"
+                  : "bg-[var(--theme-bg-card)] text-[var(--theme-text)] border-[var(--theme-border)] rounded-bl-none font-normal"
               }`}
             >
               {message.text}
@@ -149,42 +149,42 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
           </div>
         ))}
         {isTyping && (
-          <div className="flex items-center gap-2 p-3 bg-[#040806]/40 border border-emerald-950/45 rounded-lg self-start max-w-[80%] text-xs font-mono text-neutral-500">
-            <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-bounce"></span>
-            <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-bounce delay-100"></span>
-            <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-bounce delay-200"></span>
-            <span className="text-[8px] uppercase font-bold tracking-widest pl-1 text-emerald-500/80">COMPILING...</span>
+          <div className="flex items-center gap-2 p-3 bg-[var(--theme-bg-base)]/50 border border-[var(--theme-border)] rounded-lg self-start max-w-[80%] text-xs font-mono text-neutral-500">
+            <span className="w-1.5 h-1.5 bg-[var(--theme-accent)] rounded-full animate-bounce"></span>
+            <span className="w-1.5 h-1.5 bg-[var(--theme-accent)] rounded-full animate-bounce delay-100"></span>
+            <span className="w-1.5 h-1.5 bg-[var(--theme-accent)] rounded-full animate-bounce delay-200"></span>
+            <span className="text-[8px] uppercase font-bold tracking-widest pl-1 text-[var(--theme-accent)]/80">COMPILING...</span>
           </div>
         )}
       </div>
 
       {/* Quick Prompts options list */}
-      <div className="p-3 bg-slate-950/30 border-t border-emerald-950/20 flex flex-wrap gap-1.5">
+      <div className="p-3 bg-[var(--theme-bg-card)] border-t border-[var(--theme-border)] flex flex-wrap gap-1.5">
         <button
           id="chat-quick-btn-stack"
           onClick={() => handleSendMessage("What is your tech stack?")}
-          className="px-2.5 py-1.5 bg-[#050807] hover:bg-emerald-950 hover:text-white border border-emerald-950/60 text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
+          className="px-2.5 py-1.5 bg-[var(--theme-bg-base)] hover:bg-[var(--theme-accent)] hover:text-white border border-[var(--theme-border)] text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
         >
           [ TECH_STACK ]
         </button>
         <button
           id="chat-quick-btn-brand"
           onClick={() => handleSendMessage("Tell me about Marvin Clo")}
-          className="px-2.5 py-1.5 bg-[#050807] hover:bg-emerald-950 hover:text-white border border-emerald-950/60 text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
+          className="px-2.5 py-1.5 bg-[var(--theme-bg-base)] hover:bg-[var(--theme-accent)] hover:text-white border border-[var(--theme-border)] text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
         >
           [ CLO_DROP ]
         </button>
         <button
           id="chat-quick-btn-contract"
           onClick={() => handleSendMessage("Are you available for contracting work?")}
-          className="px-2.5 py-1.5 bg-[#050807] hover:bg-emerald-950 hover:text-white border border-emerald-950/60 text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
+          className="px-2.5 py-1.5 bg-[var(--theme-bg-base)] hover:bg-[var(--theme-accent)] hover:text-white border border-[var(--theme-border)] text-[8px] font-mono font-bold uppercase rounded-lg cursor-pointer transition-colors"
         >
           [ APPOINT_FRANK ]
         </button>
       </div>
 
       {/* Input Message Form */}
-      <div className="p-3 bg-slate-950/50 border-t border-emerald-950/30 flex gap-2">
+      <div className="p-3 bg-[var(--theme-bg-card)] border-t border-[var(--theme-border)] flex gap-2">
         <input
           id="chat-user-input"
           type="text"
@@ -194,14 +194,14 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSendMessage(userInput);
           }}
-          className="flex-1 py-1.5 px-3 bg-[#050807]/90 border border-emerald-950/80 rounded-lg text-xs font-mono text-[#E2E8F0] focus:outline-none focus:border-emerald-500/50 placeholder:text-neutral-600 uppercase"
+          className="flex-1 py-1.5 px-3 bg-[var(--theme-bg-base)] border border-[var(--theme-border)] rounded-lg text-xs font-mono text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-accent)] placeholder:text-neutral-500 uppercase"
         />
         <button
           id="chat-send-btn"
           onClick={() => handleSendMessage(userInput)}
-          className="w-9 h-9 bg-[#10B981] hover:bg-emerald-400 text-[#050807] rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 shadow-[0_2px_10px_rgba(16,185,129,0.2)]"
+          className="w-9 h-9 bg-[var(--theme-accent)] hover:opacity-90 text-white rounded-lg flex items-center justify-center cursor-pointer transition-all duration-300 shadow-[0_2px_10px_var(--theme-glow)]"
         >
-          <Send className="w-3.5 h-3.5 text-[#050807]" />
+          <Send className="w-3.5 h-3.5 text-white dark:text-[#050807]" />
         </button>
       </div>
 
