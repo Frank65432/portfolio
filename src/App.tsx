@@ -71,6 +71,7 @@ export default function App() {
     navigator.clipboard.writeText("frankmarvin518@gmail.com");
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2005);
+    window.location.href = "mailto:frankmarvin518@gmail.com";
   };
 
   const handleQuickTwinPrompt = (prompt: string) => {

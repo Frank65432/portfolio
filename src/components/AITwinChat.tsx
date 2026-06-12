@@ -56,7 +56,9 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
         parts: [{ text: msg.text }],
       }));
 
-      const res = await fetch("/api/chat", {
+      const apiMeta = (import.meta as any);
+      const apiBase = apiMeta.env?.VITE_API_URL || (apiMeta.env?.DEV ? "" : "https://portfolio-tvf3.onrender.com");
+      const res = await fetch(`${apiBase}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: textToSend, history }),
@@ -107,6 +109,26 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
     }
   }, [messages, isTyping]);
 
+  const renderMessageText = (text: string) => {
+    const email = "frankmarvin518@gmail.com";
+    if (text.includes(email)) {
+      const parts = text.split(email);
+      return (
+        <span>
+          {parts[0]}
+          <a
+            href={`mailto:${email}`}
+            className="text-[var(--theme-accent)] hover:underline font-semibold"
+          >
+            {email}
+          </a>
+          {parts[1]}
+        </span>
+      );
+    }
+    return text;
+  };
+
   return (
     <div className="tech-card overflow-hidden flex flex-col h-[420px] bg-[var(--theme-bg-card)] border border-[var(--theme-border)] shadow-[0_10px_25px_rgba(0,0,0,0.05)]">
       
@@ -144,7 +166,7 @@ export default function AITwinChat({ onSuggestedClick }: AITwinChatProps) {
                   : "bg-[var(--theme-bg-card)] text-[var(--theme-text)] border-[var(--theme-border)] rounded-bl-none font-normal"
               }`}
             >
-              {message.text}
+              {renderMessageText(message.text)}
             </div>
           </div>
         ))}

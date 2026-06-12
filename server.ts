@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import cors from "cors";
 import { GoogleGenAI } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 
@@ -10,6 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 // Lazy-loaded Gemini Client

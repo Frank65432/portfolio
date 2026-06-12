@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Terminal, AppWindow, ExternalLink, Github, Search, Code, CheckCircle, Mail, Activity, Cpu, Settings, Calculator, CheckSquare } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Terminal, AppWindow, ExternalLink, Github, Search, Code, CheckCircle, Mail, Activity, Cpu, Settings, Calculator, CheckSquare, RefreshCw } from "lucide-react";
 import { DEV_SKILLS, PORTFOLIO_PROJECTS } from "../data";
 import TacticalCalculator from "./TacticalCalculator";
 import GeometricTodo from "./GeometricTodo";
@@ -9,6 +9,14 @@ export default function SoftwareSection() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [showcaseTab, setShowcaseTab] = useState<"calculator" | "todo">("calculator");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const skillCategories = ["All", "Languages", "Frameworks", "UI & Styling", "Tools", "Design", "Engineering"];
 
@@ -22,6 +30,7 @@ export default function SoftwareSection() {
     navigator.clipboard.writeText("frankmarvin518@gmail.com");
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
+    window.location.href = "mailto:frankmarvin518@gmail.com";
   };
 
   return (
@@ -79,57 +88,105 @@ export default function SoftwareSection() {
               Selected Systems & Engines
             </h3>
           </div>
+          <button
+            onClick={() => {
+              setIsLoading(true);
+              setTimeout(() => setIsLoading(false), 1000);
+            }}
+            disabled={isLoading}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--theme-glow)] border border-[var(--theme-border)] hover:border-[var(--theme-accent)]/45 rounded-xl text-[9px] font-mono font-bold tracking-wider text-[var(--theme-accent)] hover:bg-[var(--theme-accent)] hover:text-white dark:hover:text-[#050807] transition-all disabled:opacity-50 cursor-pointer"
+          >
+            <RefreshCw className={`w-3 h-3 ${isLoading ? "animate-spin" : ""}`} />
+            REFRESH_LOAD
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {PORTFOLIO_PROJECTS.map((proj) => (
-            <div
-              id={`project-${proj.id}`}
-              key={proj.id}
-              className="bg-[var(--theme-bg-card)] border border-[var(--theme-border)] rounded-2xl p-6 flex flex-col justify-between hover:border-[var(--theme-accent)]/35 transition-all duration-300 backdrop-blur-md shadow-[0_5px_20px_rgba(0,0,0,0.02)] group h-full"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[9px] font-bold tracking-wider uppercase bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border)] px-2.5 py-1 rounded-full">
-                    {proj.featured ? "[ STABLE BUILD ]" : "[ EXPERIMENTAL ]"}
-                  </span>
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={() => window.open("https://github.com/frankmarvin518", "_blank")}
-                      className="text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] transition-colors cursor-pointer"
-                    >
-                      <Github className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => window.open("https://github.com/frankmarvin518", "_blank")}
-                      className="text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] transition-colors cursor-pointer"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
+          {isLoading ? (
+            // Render beautiful skeleton cards mirroring the exact layout
+            Array.from({ length: 4 }).map((_, index) => (
+              <div
+                key={`project-skeleton-${index}`}
+                className="bg-[var(--theme-bg-card)]/60 border border-[var(--theme-border)] rounded-2xl p-6 flex flex-col justify-between backdrop-blur-md shadow-[0_5px_20px_rgba(0,0,0,0.01)] h-full animate-pulse"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="h-4 w-28 bg-[var(--theme-border)]/50 rounded-full"></div>
+                    <div className="flex gap-2">
+                      <div className="w-4 h-4 bg-[var(--theme-border)]/50 rounded-full"></div>
+                      <div className="w-4 h-4 bg-[var(--theme-border)]/50 rounded-full"></div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="h-5 bg-[var(--theme-border)]/60 rounded-md w-3/4"></div>
+                    <div className="h-3 bg-[var(--theme-border)]/40 rounded-md w-1/2"></div>
+                  </div>
+
+                  <div className="space-y-2.5 pt-2">
+                    <div className="h-3 bg-[var(--theme-border)]/30 rounded-md w-full"></div>
+                    <div className="h-3 bg-[var(--theme-border)]/30 rounded-md w-5/6"></div>
+                    <div className="h-3 bg-[var(--theme-border)]/30 rounded-md w-2/3"></div>
                   </div>
                 </div>
 
-                <h4 className="font-display font-extrabold text-base text-[var(--theme-text-heading)] uppercase tracking-tight group-hover:text-[var(--theme-accent)] transition-colors">
-                  {proj.title}
-                </h4>
-
-                <p className="text-xs text-[var(--theme-text-muted)] leading-relaxed font-normal">
-                  {proj.description}
-                </p>
+                <div className="flex flex-wrap gap-1.5 pt-6 mt-6 border-t border-[var(--theme-border)]/40">
+                  <div className="w-12 h-5 bg-[var(--theme-border)]/40 rounded-md"></div>
+                  <div className="w-16 h-5 bg-[var(--theme-border)]/40 rounded-md"></div>
+                  <div className="w-14 h-5 bg-[var(--theme-border)]/40 rounded-md"></div>
+                </div>
               </div>
+            ))
+          ) : (
+            PORTFOLIO_PROJECTS.map((proj) => (
+              <div
+                id={`project-${proj.id}`}
+                key={proj.id}
+                className="bg-[var(--theme-bg-card)] border border-[var(--theme-border)] rounded-2xl p-6 flex flex-col justify-between hover:border-[var(--theme-accent)]/35 transition-all duration-300 backdrop-blur-md shadow-[0_5px_20px_rgba(0,0,0,0.02)] group h-full"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[9px] font-bold tracking-wider uppercase bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border)] px-2.5 py-1 rounded-full">
+                      {proj.featured ? "[ STABLE BUILD ]" : "[ EXPERIMENTAL ]"}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <button 
+                        onClick={() => window.open("https://github.com/frankmarvin518", "_blank")}
+                        className="text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] transition-colors cursor-pointer"
+                      >
+                        <Github className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => window.open("https://github.com/frankmarvin518", "_blank")}
+                        className="text-[var(--theme-text-muted)] hover:text-[var(--theme-accent)] transition-colors cursor-pointer"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
 
-              <div className="flex flex-wrap gap-1.5 pt-6 mt-6 border-t border-[var(--theme-border)]">
-                {proj.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[9px] font-semibold text-[var(--theme-accent)] bg-[var(--theme-glow)] border border-[var(--theme-border)] px-2.5 py-1 rounded-md"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                  <h4 className="font-display font-extrabold text-base text-[var(--theme-text-heading)] uppercase tracking-tight group-hover:text-[var(--theme-accent)] transition-colors">
+                    {proj.title}
+                  </h4>
+
+                  <p className="text-xs text-[var(--theme-text-muted)] leading-relaxed font-normal">
+                    {proj.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-6 mt-6 border-t border-[var(--theme-border)]">
+                  {proj.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-mono text-[9px] font-semibold text-[var(--theme-accent)] bg-[var(--theme-glow)] border border-[var(--theme-border)] px-2.5 py-1 rounded-md"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
