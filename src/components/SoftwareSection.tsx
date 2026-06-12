@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Terminal, AppWindow, ExternalLink, Github, Search, Code, CheckCircle, Mail, Activity, Cpu, Settings } from "lucide-react";
+import { Terminal, AppWindow, ExternalLink, Github, Search, Code, CheckCircle, Mail, Activity, Cpu, Settings, Calculator, CheckSquare } from "lucide-react";
 import { DEV_SKILLS, PORTFOLIO_PROJECTS } from "../data";
+import TacticalCalculator from "./TacticalCalculator";
+import GeometricTodo from "./GeometricTodo";
 
 export default function SoftwareSection() {
   const [skillSearch, setSkillSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [showcaseTab, setShowcaseTab] = useState<"calculator" | "todo">("calculator");
 
   const skillCategories = ["All", "Languages", "Frameworks", "UI & Styling", "Tools", "Design", "Engineering"];
 
@@ -127,6 +130,56 @@ export default function SoftwareSection() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Live Micro-Applications Interactive Showcase */}
+      <div className="space-y-6">
+        <div>
+          <span className="text-[10px] uppercase tracking-widest font-mono text-[var(--theme-accent)] font-semibold">// LIVE SYSTEM RUNTIMES</span>
+          <h3 className="font-display font-black text-xl text-white uppercase tracking-tight flex items-center gap-2 mt-1">
+            <Cpu className="w-5 h-5 text-[var(--theme-accent)] animate-spin" />
+            Interactive Micro-Applications
+          </h3>
+        </div>
+
+        {/* Tab Selection controller */}
+        <div className="flex bg-[#0A100C]/75 border border-emerald-950/60 p-1 rounded-xl text-xs font-mono max-w-md shadow-lg">
+          <button
+            id="showcase-calc-toggle"
+            type="button"
+            onClick={() => setShowcaseTab("calculator")}
+            className={`flex-1 py-2.5 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer font-bold uppercase tracking-wider ${
+              showcaseTab === "calculator"
+                ? "bg-[var(--theme-accent)] text-[#050807] font-black shadow-[0_3px_12px_var(--theme-glow)]"
+                : "text-neutral-400 hover:text-white"
+            }`}
+          >
+            <Calculator className="w-3.5 h-3.5" />
+            Tactical Calculator
+          </button>
+          <button
+            id="showcase-todo-toggle"
+            type="button"
+            onClick={() => setShowcaseTab("todo")}
+            className={`flex-1 py-2.5 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer font-bold uppercase tracking-wider ${
+              showcaseTab === "todo"
+                ? "bg-[var(--theme-accent)] text-[#050807] font-black shadow-[0_3px_12px_var(--theme-glow)]"
+                : "text-neutral-400 hover:text-white"
+            }`}
+          >
+            <CheckSquare className="w-3.5 h-3.5" />
+            Geometric Objectives
+          </button>
+        </div>
+
+        {/* Viewport Render Stage */}
+        <div className="transition-all duration-300">
+          {showcaseTab === "calculator" ? (
+            <TacticalCalculator />
+          ) : (
+            <GeometricTodo />
+          )}
         </div>
       </div>
 
