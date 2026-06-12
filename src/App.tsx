@@ -33,6 +33,20 @@ export default function App() {
   const [showFullStory, setShowFullStory] = useState(false);
   const [systemUptime, setSystemUptime] = useState("00:00:00");
   const [cpuLoad, setCpuLoad] = useState(4);
+  const [theme, setTheme] = useState<"emerald" | "void">(() => {
+    const saved = localStorage.getItem("frank_portfolio_theme");
+    return (saved === "void" || saved === "emerald") ? (saved as "void" | "emerald") : "emerald";
+  });
+
+  // Track the active system theme class
+  useEffect(() => {
+    localStorage.setItem("frank_portfolio_theme", theme);
+    if (theme === "void") {
+      document.documentElement.classList.add("theme-void");
+    } else {
+      document.documentElement.classList.remove("theme-void");
+    }
+  }, [theme]);
 
   // Simulate a live digital system monitoring telemetry (similar to ZeBeyond calculations)
   useEffect(() => {
@@ -61,22 +75,22 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050807] text-[#E2E8F0] bg-tech-grid relative overflow-hidden flex flex-col font-sans selection:bg-[#10B981]/30 selection:text-[#10B981]">
+    <div className="min-h-screen bg-[#050807] text-[#E2E8F0] bg-tech-grid relative overflow-hidden flex flex-col font-sans selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)] transition-colors duration-500">
       
       {/* Decorative ambient glowing grids behind cards */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none select-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[150px] pointer-events-none select-none"></div>
+      <div className={`absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-zinc-500/3' : 'bg-emerald-500/5'}`}></div>
+      <div className={`absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none select-none transition-all duration-500 ${theme === 'void' ? 'bg-neutral-500/3' : 'bg-emerald-600/5'}`}></div>
       
       {/* Dynamic top ticker signaling active telemetry */}
-      <div className="w-full bg-[#0A100C]/90 border-b border-emerald-950/40 px-6 py-2 flex justify-between items-center text-[9px] font-mono uppercase tracking-[0.2em] text-[#10B981]">
+      <div className="w-full bg-[#0A100C]/90 border-b border-emerald-950/40 px-6 py-2 flex justify-between items-center text-[9px] font-mono uppercase tracking-[0.2em] text-[var(--theme-accent)] transition-all">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${theme === 'void' ? 'bg-zinc-400' : 'bg-emerald-400'}`}></span>
+            <span className={`relative inline-flex rounded-full h-2 w-2 ${theme === 'void' ? 'bg-zinc-200' : 'bg-emerald-500'}`}></span>
           </span>
-          <span>SYSTEM_ONLINE // ZE_BEYOND_ENGINEv2</span>
+          <span>SYSTEM_ONLINE // ZE_BEYOND_ENGINEv2 // COLOR_THEME: {theme.toUpperCase()}</span>
         </div>
-        <div className="hidden sm:flex items-center gap-6">
+        <div className="hidden sm:flex items-center gap-6 text-neutral-400">
           <span>COORDINATES: 51.5074° N, 0.1278° W</span>
           <span>CPU_CORE: {cpuLoad}%</span>
           <span>UPTIME: {systemUptime}</span>
@@ -84,32 +98,62 @@ export default function App() {
       </div>
 
       {/* Styled Micro-Header */}
-      <header className="flex flex-col md:flex-row justify-between items-center px-6 py-8 md:px-12 border-b border-emerald-950/40 bg-[#0A100C]/45 backdrop-blur-md gap-6">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#10B981] to-[#047857] p-[1.5px] shadow-[0_0_20px_rgba(16,185,129,0.25)]">
-            <div className="w-full h-full bg-[#050807] rounded-[10px] flex items-center justify-center font-display font-black text-sm text-[#10B981]">
+      <header className="flex flex-col lg:flex-row justify-between items-center px-6 py-8 md:px-12 border-b border-emerald-950/40 bg-[#0A100C]/45 backdrop-blur-md gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[var(--theme-accent)] to-[var(--theme-accent-hover)] p-[1.5px] shadow-[0_0_20px_var(--theme-glow)] transition-all duration-500">
+            <div className="w-full h-full bg-[#050807] rounded-[10px] flex items-center justify-center font-display font-black text-sm text-[var(--theme-accent)] transition-all">
               FM
             </div>
           </div>
           <div>
-            <div className="text-[10px] font-mono tracking-widest uppercase text-[#10B981]/70">PORTFOLIO VOL. 04</div>
+            <div className="text-[10px] font-mono tracking-widest uppercase text-[var(--theme-accent)] opacity-70 transition-all">// PORTFOLIO VOL. 04</div>
             <h1 className="font-display font-black text-2xl tracking-tight text-white uppercase leading-none mt-1">
               FRANK MARVIN
             </h1>
           </div>
         </div>
         
-        {/* Contact credentials */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-[#E2E8F0]/70">
+        {/* Contact credentials & Theme Switching controller */}
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 text-[10px] font-mono uppercase tracking-widest text-[#E2E8F0]/70">
+          
+          {/* Theme switcher segmented array */}
+          <div className="flex items-center bg-[#050807]/90 border border-emerald-950/70 p-1 rounded-xl text-[9px] font-mono shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+            <span className="px-2 text-[8px] text-neutral-500 select-none uppercase font-bold">THEME:</span>
+            <button
+              id="theme-emerald-btn"
+              type="button"
+              onClick={() => setTheme("emerald")}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer font-bold ${
+                theme === "emerald"
+                  ? "bg-[#10B981] text-[#050807] font-black shadow-[0_0_10px_rgba(16,185,129,0.25)]"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              EMERALD
+            </button>
+            <button
+              id="theme-void-btn"
+              type="button"
+              onClick={() => setTheme("void")}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer font-bold ${
+                theme === "void"
+                  ? "bg-white text-black font-black shadow-[0_0_10px_rgba(255,255,255,0.25)]"
+                  : "text-neutral-400 hover:text-white"
+              }`}
+            >
+              VOID (MONO)
+            </button>
+          </div>
+
           <div className="flex items-center gap-2 bg-emerald-950/30 px-3 py-1.5 rounded-full border border-emerald-900/40">
-            <Phone className="w-3.5 h-3.5 text-[#10B981]" />
+            <Phone className="w-3.5 h-3.5 text-[var(--theme-accent)] transition-all" />
             <span>07026100477</span>
           </div>
           
           <button
             id="copy-email-header-btn"
             onClick={handleCopyEmail}
-            className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-[#10B981] border border-emerald-500/20 rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-[var(--theme-accent)] border border-emerald-500/20 rounded-full text-[10px] font-mono tracking-widest uppercase transition-all cursor-pointer"
           >
             <Mail className="w-3.5 h-3.5" />
             <span>{copiedEmail ? "COPIED TO CLIPBOARD" : "frankmarvin518@gmail.com"}</span>
@@ -125,13 +169,13 @@ export default function App() {
           <div className="lg:col-span-4 lg:sticky lg:top-8 space-y-8">
             
             {/* Elegant glassmorphism Card */}
-            <div className="tech-card p-6 md:p-8 space-y-6 relative overflow-hidden bg-dot-matrix">
+            <div className="tech-card p-6 md:p-8 space-y-6 relative overflow-hidden bg-dot-matrix animate-fade-in-up">
               <div className="flex items-center justify-between border-b border-emerald-950/50 pb-4">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#10B981] bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-800/40">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--theme-accent)] bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-800/40">
                   SYSTEM OVERVIEW
                 </span>
-                <div className="flex items-center gap-1.5 text-xs text-[#10B981]/60 font-mono">
-                  <Activity className="w-3 h-3 animate-pulse text-[#10B981]" />
+                <div className="flex items-center gap-1.5 text-xs text-[var(--theme-accent)] opacity-75 font-mono">
+                  <Activity className="w-3 h-3 animate-pulse text-[var(--theme-accent)]" />
                   <span>ACTIVE</span>
                 </div>
               </div>
@@ -141,15 +185,15 @@ export default function App() {
                   FRANK MARVIN
                 </h2>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span className="text-[10px] font-mono tracking-widest text-emerald-400 uppercase">
+                  <span className={`w-2 h-2 rounded-full animate-ping ${theme === 'void' ? 'bg-zinc-400' : 'bg-emerald-400'}`}></span>
+                  <span className={`text-[10px] font-mono tracking-widest uppercase ${theme === 'void' ? 'text-zinc-400' : 'text-emerald-400'}`}>
                     FRONTEND ENGINEER / DESIGN SYSTEMS
                   </span>
                 </div>
               </div>
 
               <p className="text-xs text-[#94A3B8] leading-relaxed font-normal">
-                I engineer highly performant, visual frontend systems that combine design physics with production code complexity. Focusing on clean grid networks, low CPU rendering, micro-interactions, and beautiful user experience frameworks. Founder of <span className="text-white hover:text-[#10B981] transition-all font-semibold cursor-pointer">MARVIN CLO</span> and developer educator on YouTube.
+                I engineer highly performant, visual frontend systems that combine design physics with production code complexity. Focusing on clean grid networks, low CPU rendering, micro-interactions, and beautiful user experience frameworks. Founder of <span className="text-white hover:text-[var(--theme-accent)] transition-all font-semibold cursor-pointer">MARVIN CLO</span> and developer educator on YouTube.
               </p>
 
               {/* Social Channels List with high-tech badge styling */}
@@ -158,14 +202,14 @@ export default function App() {
                   onClick={() => window.open("https://github.com", "_blank")}
                   className="tech-btn-secondary flex items-center gap-1.5 px-3.5 py-2 text-[10px] font-mono tracking-wider cursor-pointer font-bold"
                 >
-                  <Github className="w-3.5 h-3.5 text-[#10B981]" />
+                  <Github className="w-3.5 h-3.5 text-[var(--theme-accent)]" />
                   <span>GITHUB</span>
                 </button>
                 <button 
                   onClick={() => window.open("https://youtube.com", "_blank")}
                   className="tech-btn-secondary flex items-center gap-1.5 px-3.5 py-2 text-[10px] font-mono tracking-wider cursor-pointer font-bold"
                 >
-                  <Youtube className="w-3.5 h-3.5 text-emerald-500" />
+                  <Youtube className={`w-3.5 h-3.5 ${theme === 'void' ? 'text-white' : 'text-emerald-500'}`} />
                   <span>YOUTUBE</span>
                 </button>
                 <button 
@@ -189,7 +233,7 @@ export default function App() {
                 <button
                   id="toggle-story-btn"
                   onClick={() => setShowFullStory(!showFullStory)}
-                  className="w-full flex items-center justify-between text-left text-[11px] font-mono font-bold uppercase tracking-wider text-[#10B981] hover:text-[#22C55E] transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between text-left text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--theme-accent)] hover:opacity-80 transition-all cursor-pointer"
                 >
                   <span>{showFullStory ? "// COLLAPSE SCHEMATICS" : "// EXPAND EXPERIENCES"}</span>
                   <span className="text-xs font-mono">{showFullStory ? "[-]" : "[+]"}</span>
@@ -199,7 +243,7 @@ export default function App() {
                   <div className="mt-4 space-y-5 text-xs text-[#94A3B8] leading-relaxed border-t border-dashed border-emerald-950/50 pt-4 animate-fade-in">
                     <div className="space-y-1">
                       <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
-                        <span className="text-[#10B981]">// 01_ </span> FRONTEND ENGINEERING
+                        <span className="text-[var(--theme-accent)]">// 01_ </span> FRONTEND ENGINEERING
                       </strong>
                       <p>
                         Specialized in modular layout rendering, low-overhead UI bundling, and beautiful physics-based components built inside React networks.
@@ -207,7 +251,7 @@ export default function App() {
                     </div>
                     <div className="space-y-1">
                       <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
-                        <span className="text-[#10B981]">// 02_ </span> CONTENT BROADCASTANDER
+                        <span className="text-[var(--theme-accent)]">// 02_ </span> CONTENT BROADCASTANDER
                       </strong>
                       <p>
                         Publishing high-fidelity build guides, custom vector math tutorials, and structural layout breakdowns to 240,000+ developers globally.
@@ -215,14 +259,14 @@ export default function App() {
                     </div>
                     <div className="space-y-1">
                       <strong className="text-white block uppercase font-mono text-[9px] tracking-wider font-semibold">
-                        <span className="text-[#10B981]">// 03_ </span> STREETWEAR GEOMETRICS
+                        <span className="text-[var(--theme-accent)]">// 03_ </span> STREETWEAR GEOMETRICS
                       </strong>
                       <p>
                         Transforming grid-aligned coding coordinates into heavy organic apparel drops at my clothing design lab, MARVIN CLO.
                       </p>
                     </div>
                     <div className="bg-[#0A100C]/75 p-3.5 rounded-xl border border-emerald-950/50 text-[10px]">
-                      <span className="font-mono text-[#10B981] block uppercase tracking-wider font-bold mb-1">CORE STATEMENT</span>
+                      <span className="font-mono text-[var(--theme-accent)] block uppercase tracking-wider font-bold mb-1">CORE STATEMENT</span>
                       <p className="text-[#8492A6]">
                         Perfect products don't come from default layouts. They come from rigorous calculations, strict typography standards, and exceptional craft.
                       </p>
@@ -238,7 +282,7 @@ export default function App() {
           </div>
 
           {/* Right Column (Dynamic Workspace Grid Area) */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-8 animate-fade-in-up md:animation-delay-200">
             
             {/* Elegant high-tech tab system mimicking ZeBeyond */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 p-1.5 bg-[#0A100C]/80 border border-emerald-950/40 rounded-2xl">
@@ -247,7 +291,7 @@ export default function App() {
                 onClick={() => setActiveTab("software")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "software"
-                    ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.06)]"
+                    ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
                     : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -262,7 +306,7 @@ export default function App() {
                 onClick={() => setActiveTab("youtube")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "youtube"
-                    ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.06)]"
+                    ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
                     : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -277,7 +321,7 @@ export default function App() {
                 onClick={() => setActiveTab("clothing")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "clothing"
-                    ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.06)]"
+                    ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
                     : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -292,7 +336,7 @@ export default function App() {
                 onClick={() => setActiveTab("creator")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "creator"
-                    ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.06)]"
+                    ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
                     : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -307,7 +351,7 @@ export default function App() {
                 onClick={() => setActiveTab("figma")}
                 className={`py-3 px-4 rounded-xl text-xs font-mono tracking-wider transition-all duration-300 cursor-pointer flex items-center justify-center ${
                   activeTab === "figma"
-                    ? "bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold shadow-[0_0_15px_rgba(16,185,129,0.06)]"
+                    ? "bg-[var(--theme-glow)] text-[var(--theme-accent)] border border-[var(--theme-border-hover)] font-bold shadow-[0_0_15px_var(--theme-glow)]"
                     : "text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -321,7 +365,7 @@ export default function App() {
             {/* Active section viewport stage */}
             <div className="tech-card p-6 md:p-8 relative min-h-[500px]">
               {/* Subtle top horizontal decorative grid */}
-              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#10B981]/30 to-transparent"></div>
+              <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[var(--theme-accent)]/30 to-transparent"></div>
               
               {activeTab === "software" && <SoftwareSection />}
               {activeTab === "youtube" && <YouTubeSection />}
@@ -338,11 +382,11 @@ export default function App() {
       {/* Technical coordinate footer */}
       <footer className="border-t border-emerald-950/40 bg-[#0A100C]/80 px-8 py-8 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-mono uppercase tracking-[0.15em] text-[#E2E8F0]/50">
         <div className="flex items-center gap-3">
-          <Layers className="w-4 h-4 text-[#10B981]" />
+          <Layers className="w-4 h-4 text-[var(--theme-accent)] transition-all" />
           <span>&copy; 2026 FRANK MARVIN STUDIO • Inspired by ZeBeyond Engineering System v4</span>
         </div>
         <div className="flex flex-wrap justify-center gap-6">
-          <span className="text-[#10B981]/80 hover:text-[#10B981] transition-all cursor-pointer">TEL: 07026100477</span>
+          <span className="text-[var(--theme-accent)] opacity-85 hover:opacity-100 transition-all cursor-pointer">TEL: 07026100477</span>
           <span className="hover:text-white transition-all cursor-pointer">SPECS: React 18 / Tailwind / Canvas</span>
           <span className="hover:text-white transition-all cursor-pointer">GRID_DETERMINISTIC_MATRIX</span>
         </div>
